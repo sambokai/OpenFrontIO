@@ -40,7 +40,7 @@ export class FakeHumanExecution implements Execution {
 
   private active = true;
   private random: PseudoRandom;
-  private behavior: BotBehavior | null = null;
+  private behavior: BotBehavior | null = null; // Shared behavior logic for both bots and fakehumans
   private mg: Game;
   private player: Player | null = null;
 
@@ -57,7 +57,7 @@ export class FakeHumanExecution implements Execution {
 
   constructor(
     gameID: GameID,
-    private nation: Nation,
+    private nation: Nation, // Nation contains PlayerInfo with PlayerType.FakeHuman
   ) {
     this.random = new PseudoRandom(
       simpleHash(nation.playerInfo.id) + simpleHash(gameID),
@@ -273,7 +273,7 @@ export class FakeHumanExecution implements Execution {
     if (
       silos.length === 0 ||
       this.player.gold() < this.cost(UnitType.AtomBomb) ||
-      other.type() === PlayerType.Bot ||
+      other.type() === PlayerType.Bot || // Don't nuke bots (as opposed to fakehumans and humans)
       this.player.isOnSameTeam(other)
     ) {
       return;
