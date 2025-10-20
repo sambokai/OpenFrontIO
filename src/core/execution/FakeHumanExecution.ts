@@ -129,7 +129,6 @@ export class FakeHumanExecution implements Execution {
   }
 
   tick(ticks: number) {
-    console.log("tick", ticks);
     if (ticks % this.attackRate !== this.attackTick) return;
 
     if (this.mg.inSpawnPhase()) {
@@ -877,6 +876,8 @@ export class FakeHumanExecution implements Execution {
   // MIRV Execution Methods
   private maybeSendMIRV(enemy: Player): void {
     if (this.player === null) throw new Error("not initialized");
+
+    this.maybeSendEmoji(enemy);
 
     const enemyTiles = Array.from(enemy.tiles());
     if (enemyTiles.length === 0) return;
