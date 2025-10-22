@@ -427,7 +427,6 @@ export class MilitaryAdvisor extends BaseAdvisor {
     }
   }
 
-  // Original methods from FakeHumanExecution
   private maybeSendEmoji(enemy: Player): void {
     if (enemy.type() !== PlayerType.Human) return;
     const lastSent = this.lastEmojiSent.get(enemy) ?? -300;

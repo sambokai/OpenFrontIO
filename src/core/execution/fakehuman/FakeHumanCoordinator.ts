@@ -1,16 +1,16 @@
-import { Execution, Game, Nation, Player, TerrainType } from "../game/Game";
-import { TileRef } from "../game/GameMap";
-import { PseudoRandom } from "../PseudoRandom";
-import { GameID } from "../Schemas";
-import { simpleHash } from "../Util";
-import { DiplomacyAdvisor } from "./fakehuman/DiplomacyAdvisor";
-import { EconomyAdvisor } from "./fakehuman/EconomyAdvisor";
-import { MilitaryAdvisor } from "./fakehuman/MilitaryAdvisor";
-import { MIRVAdvisor } from "./fakehuman/MIRVAdvisor";
-import { SpawnExecution } from "./SpawnExecution";
-import { BotBehavior } from "./utils/BotBehavior";
+import { Execution, Game, Nation, Player, TerrainType } from "../../game/Game";
+import { TileRef } from "../../game/GameMap";
+import { PseudoRandom } from "../../PseudoRandom";
+import { GameID } from "../../Schemas";
+import { simpleHash } from "../../Util";
+import { SpawnExecution } from "../SpawnExecution";
+import { BotBehavior } from "../utils/BotBehavior";
+import { DiplomacyAdvisor } from "./DiplomacyAdvisor";
+import { EconomyAdvisor } from "./EconomyAdvisor";
+import { MilitaryAdvisor } from "./MilitaryAdvisor";
+import { MIRVAdvisor } from "./MIRVAdvisor";
 
-export class FakeHumanExecution implements Execution {
+export class FakeHumanCoordinator implements Execution {
   private active = true;
   private random: PseudoRandom;
   private behavior: BotBehavior | null = null; // Shared behavior logic for both bots and fakehumans

@@ -1,4 +1,4 @@
-import { FakeHumanExecution } from "../src/core/execution/FakeHumanExecution";
+import { FakeHumanCoordinator } from "../src/core/execution/fakehuman/FakeHumanCoordinator";
 import { MirvExecution } from "../src/core/execution/MIRVExecution";
 import {
   Cell,
@@ -88,7 +88,7 @@ describe("FakeHuman MIRV Retaliation", () => {
     // Track MIRVs before fakehuman retaliates
     const mirvCountBefore = fakehuman.units(UnitType.MIRV).length;
 
-    // Initialize fakehuman with FakeHumanExecution to enable retaliation logic
+    // Initialize fakehuman with FakeHumanCoordinator to enable retaliation logic
     const fakehumanNation = new Nation(new Cell(50, 50), 1, fakehuman.info());
 
     // Try different game IDs to find one that passes the MIRV failure rate
@@ -97,7 +97,7 @@ describe("FakeHuman MIRV Retaliation", () => {
     let retaliationSuccessful = false;
 
     for (const gameId of gameIds) {
-      const testExecution = new FakeHumanExecution(gameId, fakehumanNation);
+      const testExecution = new FakeHumanCoordinator(gameId, fakehumanNation);
       testExecution.init(game);
 
       // Execute fakehuman's tick logic - need to run many iterations because:
@@ -253,7 +253,7 @@ describe("FakeHuman MIRV Retaliation", () => {
     // Track MIRVs before fakehuman considers victory denial
     const mirvCountBefore = fakehuman.units(UnitType.MIRV).length;
 
-    // Initialize fakehuman with FakeHumanExecution to enable victory denial logic
+    // Initialize fakehuman with FakeHumanCoordinator to enable victory denial logic
     const fakehumanNation = new Nation(new Cell(50, 50), 1, fakehuman.info());
 
     // Try different game IDs to find one that passes the MIRV failure rate
@@ -261,7 +261,7 @@ describe("FakeHuman MIRV Retaliation", () => {
     let victoryDenialSuccessful = false;
 
     for (const gameId of gameIds) {
-      const testExecution = new FakeHumanExecution(gameId, fakehumanNation);
+      const testExecution = new FakeHumanCoordinator(gameId, fakehumanNation);
       testExecution.init(game);
 
       for (let tick = 0; tick < 200; tick++) {
@@ -405,7 +405,7 @@ describe("FakeHuman MIRV Retaliation", () => {
     // Track MIRVs before fakehuman considers steamroll stop
     const mirvCountBefore = fakehuman.units(UnitType.MIRV).length;
 
-    // Initialize fakehuman with FakeHumanExecution to enable steamroll stop logic
+    // Initialize fakehuman with FakeHumanCoordinator to enable steamroll stop logic
     const fakehumanNation = new Nation(new Cell(50, 50), 1, fakehuman.info());
 
     // Try different game IDs to find one that passes the MIRV failure rate
@@ -413,7 +413,7 @@ describe("FakeHuman MIRV Retaliation", () => {
     let steamrollStopSuccessful = false;
 
     for (const gameId of gameIds) {
-      const testExecution = new FakeHumanExecution(gameId, fakehumanNation);
+      const testExecution = new FakeHumanCoordinator(gameId, fakehumanNation);
       testExecution.init(game);
 
       for (let tick = 0; tick < 200; tick++) {
@@ -561,7 +561,7 @@ describe("FakeHuman MIRV Retaliation", () => {
     // Track MIRVs before fakehuman considers team victory denial
     const mirvCountBefore = fakehuman.units(UnitType.MIRV).length;
 
-    // Initialize fakehuman with FakeHumanExecution to enable team victory denial logic
+    // Initialize fakehuman with FakeHumanCoordinator to enable team victory denial logic
     const fakehumanNation = new Nation(new Cell(50, 50), 1, fakehuman.info());
 
     // Try different game IDs to find one that passes the MIRV failure rate
@@ -569,7 +569,7 @@ describe("FakeHuman MIRV Retaliation", () => {
     let teamVictoryDenialSuccessful = false;
 
     for (const gameId of gameIds) {
-      const testExecution = new FakeHumanExecution(gameId, fakehumanNation);
+      const testExecution = new FakeHumanCoordinator(gameId, fakehumanNation);
       testExecution.init(game);
 
       for (let tick = 0; tick < 200; tick++) {
