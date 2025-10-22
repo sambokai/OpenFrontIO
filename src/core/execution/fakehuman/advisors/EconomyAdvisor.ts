@@ -1,9 +1,9 @@
-import { UnitType } from "../../game/Game";
-import { ConstructionExecution } from "../ConstructionExecution";
-import { structureSpawnTileValue } from "../nation/structureSpawnTileValue";
-import { BaseAdvisor } from "./BaseAdvisor";
-import { ActionRecommendation, AdvisorPriority } from "./types";
-import { randCoastalTileArray, randTerritoryTileArray } from "./utils";
+import { UnitType } from "../../../game/Game";
+import { ConstructionExecution } from "../../ConstructionExecution";
+import { structureSpawnTileValue } from "../../nation/structureSpawnTileValue";
+import { BaseAdvisor } from "../core/BaseAdvisor";
+import { ActionRecommendation, AdvisorPriority } from "../core/types";
+import { randCoastalTileArray, randTerritoryTileArray } from "../utils/utils";
 
 /**
  * Economy advisor handles structure building and economic decisions
@@ -141,7 +141,7 @@ export class EconomyAdvisor extends BaseAdvisor {
    */
   private structureSpawnTile(
     type: UnitType,
-  ): import("../../game/GameMap").TileRef | null {
+  ): import("../../../game/GameMap").TileRef | null {
     const tiles =
       type === UnitType.Port
         ? randCoastalTileArray(this.game, this.player, this.random, 25)
@@ -150,7 +150,7 @@ export class EconomyAdvisor extends BaseAdvisor {
     if (tiles.length === 0) return null;
 
     const valueFunction = structureSpawnTileValue(this.game, this.player, type);
-    let bestTile: import("../../game/GameMap").TileRef | null = null;
+    let bestTile: import("../../../game/GameMap").TileRef | null = null;
     let bestValue = 0;
 
     for (const t of tiles) {
@@ -169,8 +169,8 @@ export class EconomyAdvisor extends BaseAdvisor {
    * Find a suitable tile to spawn a warship near a port
    */
   private warshipSpawnTile(
-    portTile: import("../../game/GameMap").TileRef,
-  ): import("../../game/GameMap").TileRef | null {
+    portTile: import("../../../game/GameMap").TileRef,
+  ): import("../../../game/GameMap").TileRef | null {
     const radius = 250;
     for (let attempts = 0; attempts < 50; attempts++) {
       const randX = this.random.nextInt(

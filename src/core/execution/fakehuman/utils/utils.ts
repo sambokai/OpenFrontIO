@@ -1,7 +1,7 @@
-import { Cell, Game, Player } from "../../game/Game";
-import { TileRef } from "../../game/GameMap";
-import { PseudoRandom } from "../../PseudoRandom";
-import { calculateBoundingBox } from "../../Util";
+import { Cell, Game, Player } from "../../../game/Game";
+import { TileRef } from "../../../game/GameMap";
+import { PseudoRandom } from "../../../PseudoRandom";
+import { calculateBoundingBox } from "../../../Util";
 
 /**
  * Sample a random array of territory tiles

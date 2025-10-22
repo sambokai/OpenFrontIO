@@ -1,4 +1,4 @@
-import { FakeHumanCoordinator } from "../src/core/execution/fakehuman/FakeHumanCoordinator";
+import { FakeHumanCoordinator } from "../src/core/execution/fakehuman/core/FakeHumanCoordinator";
 import { MirvExecution } from "../src/core/execution/MIRVExecution";
 import {
   Cell,

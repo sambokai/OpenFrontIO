@@ -1,13 +1,13 @@
-import { Cell, Player, PlayerType, Tick, UnitType } from "../../game/Game";
-import { euclDistFN, TileRef } from "../../game/GameMap";
-import { boundingBoxTiles } from "../../Util";
-import { EmojiExecution } from "../EmojiExecution";
-import { NukeExecution } from "../NukeExecution";
-import { TransportShipExecution } from "../TransportShipExecution";
-import { closestTwoTiles } from "../Util";
-import { BotBehavior, EMOJI_HECKLE } from "../utils/BotBehavior";
-import { BaseAdvisor } from "./BaseAdvisor";
-import { ActionRecommendation, AdvisorPriority } from "./types";
+import { Cell, Player, PlayerType, Tick, UnitType } from "../../../game/Game";
+import { euclDistFN, TileRef } from "../../../game/GameMap";
+import { boundingBoxTiles } from "../../../Util";
+import { EmojiExecution } from "../../EmojiExecution";
+import { NukeExecution } from "../../NukeExecution";
+import { TransportShipExecution } from "../../TransportShipExecution";
+import { closestTwoTiles } from "../../Util";
+import { BotBehavior, EMOJI_HECKLE } from "../../utils/BotBehavior";
+import { BaseAdvisor } from "../core/BaseAdvisor";
+import { ActionRecommendation, AdvisorPriority } from "../core/types";
 
 /**
  * Military advisor handles attack strategies, enemy selection, and military decisions

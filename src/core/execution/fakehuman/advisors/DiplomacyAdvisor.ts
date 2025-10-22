@@ -1,6 +1,6 @@
-import { Player, PlayerID, Relation, Tick } from "../../game/Game";
-import { BaseAdvisor } from "./BaseAdvisor";
-import { ActionRecommendation, AdvisorPriority } from "./types";
+import { Player, PlayerID, Relation, Tick } from "../../../game/Game";
+import { BaseAdvisor } from "../core/BaseAdvisor";
+import { ActionRecommendation, AdvisorPriority } from "../core/types";
 
 /**
  * DiplomacyAdvisor handles diplomatic decisions including:

@@ -1,14 +1,20 @@
-import { Execution, Game, Nation, Player, TerrainType } from "../../game/Game";
-import { TileRef } from "../../game/GameMap";
-import { PseudoRandom } from "../../PseudoRandom";
-import { GameID } from "../../Schemas";
-import { simpleHash } from "../../Util";
-import { SpawnExecution } from "../SpawnExecution";
-import { BotBehavior } from "../utils/BotBehavior";
-import { DiplomacyAdvisor } from "./DiplomacyAdvisor";
-import { EconomyAdvisor } from "./EconomyAdvisor";
-import { MilitaryAdvisor } from "./MilitaryAdvisor";
-import { MIRVAdvisor } from "./MIRVAdvisor";
+import {
+  Execution,
+  Game,
+  Nation,
+  Player,
+  TerrainType,
+} from "../../../game/Game";
+import { TileRef } from "../../../game/GameMap";
+import { PseudoRandom } from "../../../PseudoRandom";
+import { GameID } from "../../../Schemas";
+import { simpleHash } from "../../../Util";
+import { SpawnExecution } from "../../SpawnExecution";
+import { BotBehavior } from "../../utils/BotBehavior";
+import { DiplomacyAdvisor } from "../advisors/DiplomacyAdvisor";
+import { EconomyAdvisor } from "../advisors/EconomyAdvisor";
+import { MilitaryAdvisor } from "../advisors/MilitaryAdvisor";
+import { MIRVAdvisor } from "../advisors/MIRVAdvisor";
 
 export class FakeHumanCoordinator implements Execution {
   private active = true;

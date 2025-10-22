@@ -1,9 +1,9 @@
-import { Gold, Player, PlayerType, Tick, UnitType } from "../../game/Game";
-import { TileRef } from "../../game/GameMap";
-import { MirvExecution } from "../MIRVExecution";
-import { BaseAdvisor } from "./BaseAdvisor";
-import { ActionRecommendation, AdvisorPriority } from "./types";
-import { calculateTerritoryCenter } from "./utils";
+import { Gold, Player, PlayerType, Tick, UnitType } from "../../../game/Game";
+import { TileRef } from "../../../game/GameMap";
+import { MirvExecution } from "../../MIRVExecution";
+import { BaseAdvisor } from "../core/BaseAdvisor";
+import { ActionRecommendation, AdvisorPriority } from "../core/types";
+import { calculateTerritoryCenter } from "../utils/utils";
 
 /**
  * MIRV advisor handles MIRV strategy, targeting, and reserve management

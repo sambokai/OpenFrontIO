@@ -1,5 +1,5 @@
-import { Game, Gold, Player, UnitType } from "../../game/Game";
-import { PseudoRandom } from "../../PseudoRandom";
+import { Game, Gold, Player, UnitType } from "../../../game/Game";
+import { PseudoRandom } from "../../../PseudoRandom";
 import { Advisor, AdvisorDependencies } from "./types";
 
 /**

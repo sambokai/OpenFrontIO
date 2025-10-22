@@ -1,5 +1,5 @@
-import { Game, Player } from "../../game/Game";
-import { PseudoRandom } from "../../PseudoRandom";
+import { Game, Player } from "../../../game/Game";
+import { PseudoRandom } from "../../../PseudoRandom";
 
 /**
  * Represents a recommended action from an advisor
