@@ -570,6 +570,9 @@ export class DefaultConfig implements Config {
   donateCooldown(): Tick {
     return 10 * 10;
   }
+  embargoAllCooldown(): Tick {
+    return 10 * 10;
+  }
   deleteUnitCooldown(): Tick {
     return 5 * 10;
   }
