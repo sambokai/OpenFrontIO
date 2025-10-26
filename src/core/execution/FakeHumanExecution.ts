@@ -770,13 +770,10 @@ export class FakeHumanExecution implements Execution {
 
   private selectSteamrollStopTarget(): Player | null {
     if (this.player === null) throw new Error("not initialized");
-    const validTargets = this.getValidMirvTargetPlayers()
-      .map((p) => ({ p, cityCount: this.countCities(p) }))
-      .sort((a, b) => b.cityCount - a.cityCount);
+    const validTargets = this.getValidMirvTargetPlayers();
 
     if (validTargets.length === 0) return null;
 
-    const topTarget = validTargets[0];
     const allPlayers = this.mg
       .players()
       .filter((p) => p.isPlayer())
@@ -785,19 +782,14 @@ export class FakeHumanExecution implements Execution {
 
     if (allPlayers.length < 2) return null;
 
-    let secondHighest = 0;
-    for (const { p, cityCount } of allPlayers) {
-      if (p !== topTarget.p) {
-        secondHighest = cityCount;
-        break;
-      }
-    }
+    const topPlayer = allPlayers[0];
+    const secondHighest = allPlayers[1].cityCount;
 
     const threshold =
       secondHighest * FakeHumanExecution.STEAMROLL_CITY_GAP_MULTIPLIER;
 
-    if (topTarget.cityCount >= threshold) {
-      return topTarget.p;
+    if (topPlayer.cityCount >= threshold) {
+      return validTargets.some((p) => p === topPlayer.p) ? topPlayer.p : null;
     }
 
     return null;
