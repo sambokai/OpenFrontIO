@@ -1,4 +1,3 @@
-import { placeName as calculateTerritoryCenter } from "../../client/graphics/NameBoxCalculator";
 import {
   Cell,
   Execution,
@@ -26,7 +25,7 @@ import { structureSpawnTileValue } from "./nation/structureSpawnTileValue";
 import { NukeExecution } from "./NukeExecution";
 import { SpawnExecution } from "./SpawnExecution";
 import { TransportShipExecution } from "./TransportShipExecution";
-import { closestTwoTiles } from "./Util";
+import { calculateTerritoryCenter, closestTwoTiles } from "./Util";
 import { BotBehavior, EMOJI_HECKLE } from "./utils/BotBehavior";
 
 export class FakeHumanExecution implements Execution {
@@ -843,31 +842,7 @@ export class FakeHumanExecution implements Execution {
   }
 
   private calculateTerritoryCenter(target: Player): TileRef | null {
-    const nameData = calculateTerritoryCenter(this.mg, target);
-    const centerTile = this.mg.ref(nameData.x, nameData.y);
-
-    if (this.mg.owner(centerTile) === target) {
-      return centerTile;
-    }
-
-    const borderTiles = Array.from(target.borderTiles());
-    if (borderTiles.length === 0) return null;
-
-    let closestTile: TileRef | null = null;
-    let closestDistanceSquared = Infinity;
-
-    for (const tile of borderTiles) {
-      const dx = this.mg.x(tile) - nameData.x;
-      const dy = this.mg.y(tile) - nameData.y;
-      const distSquared = dx * dx + dy * dy;
-
-      if (distSquared < closestDistanceSquared) {
-        closestDistanceSquared = distSquared;
-        closestTile = tile;
-      }
-    }
-
-    return closestTile;
+    return calculateTerritoryCenter(this.mg, target);
   }
 
   // MIRV Execution Methods
