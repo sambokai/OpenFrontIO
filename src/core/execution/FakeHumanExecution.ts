@@ -1,3 +1,4 @@
+import { placeName as calculateTerritoryCenter } from "../../client/graphics/NameBoxCalculator";
 import {
   Cell,
   Execution,
@@ -850,26 +851,22 @@ export class FakeHumanExecution implements Execution {
   }
 
   private calculateTerritoryCenter(target: Player): TileRef | null {
-    const tiles = Array.from(target.tiles());
-    if (tiles.length === 0) return null;
+    const nameData = calculateTerritoryCenter(this.mg, target);
+    const centerTile = this.mg.ref(nameData.x, nameData.y);
 
-    let sumX = 0;
-    let sumY = 0;
-    for (const tile of tiles) {
-      sumX += this.mg.x(tile);
-      sumY += this.mg.y(tile);
+    if (this.mg.owner(centerTile) === target) {
+      return centerTile;
     }
-    const centerX = sumX / tiles.length;
-    const centerY = sumY / tiles.length;
 
-    // Find closest in single pass
+    const borderTiles = Array.from(target.borderTiles());
+    if (borderTiles.length === 0) return null;
+
     let closestTile: TileRef | null = null;
     let closestDistanceSquared = Infinity;
 
-    for (const tile of tiles) {
-      // Use squared distance to avoid sqrt
-      const dx = this.mg.x(tile) - centerX;
-      const dy = this.mg.y(tile) - centerY;
+    for (const tile of borderTiles) {
+      const dx = this.mg.x(tile) - nameData.x;
+      const dy = this.mg.y(tile) - nameData.y;
       const distSquared = dx * dx + dy * dy;
 
       if (distSquared < closestDistanceSquared) {
