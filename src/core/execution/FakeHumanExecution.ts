@@ -17,6 +17,7 @@ import { TileRef, euclDistFN } from "../game/GameMap";
 import { PseudoRandom } from "../PseudoRandom";
 import { GameID } from "../Schemas";
 import { boundingBoxTiles, calculateBoundingBox, simpleHash } from "../Util";
+import { AllianceRequestExecution } from "./alliance/AllianceRequestExecution";
 import { ConstructionExecution } from "./ConstructionExecution";
 import { EmojiExecution } from "./EmojiExecution";
 import { MirvExecution } from "./MIRVExecution";
@@ -252,7 +253,9 @@ export class FakeHumanExecution implements Execution {
     if (this.random.chance(20)) {
       const toAlly = this.random.randElement(enemies);
       if (this.player.canSendAllianceRequest(toAlly)) {
-        this.player.createAllianceRequest(toAlly);
+        this.mg.addExecution(
+          new AllianceRequestExecution(this.player, toAlly.id()),
+        );
       }
     }
 
