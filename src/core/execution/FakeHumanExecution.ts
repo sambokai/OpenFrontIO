@@ -49,7 +49,7 @@ export class FakeHumanExecution implements Execution {
   /** MIRV Strategy Constants */
 
   /** Ticks until MIRV can be attempted again */
-  private static readonly MIRV_COOLDOWN_TICKS = 600;
+  private static readonly MIRV_COOLDOWN_TICKS = 20;
 
   /** Odds of aborting a MIRV attempt */
   private static readonly MIRV_HESITATION_ODDS = 7;
@@ -61,7 +61,10 @@ export class FakeHumanExecution implements Execution {
   private static readonly VICTORY_DENIAL_INDIVIDUAL_THRESHOLD = 0.65;
 
   /** Multiplier for steamroll city gap threshold */
-  private static readonly STEAMROLL_CITY_GAP_MULTIPLIER = 1.8;
+  private static readonly STEAMROLL_CITY_GAP_MULTIPLIER = 1.3;
+
+  /** Minimum city count for leader to trigger steam roll detection */
+  private static readonly STEAMROLL_MIN_LEADER_CITIES = 10;
 
   constructor(
     gameID: GameID,
@@ -782,6 +785,10 @@ export class FakeHumanExecution implements Execution {
     if (allPlayers.length < 2) return null;
 
     const topPlayer = allPlayers[0];
+
+    if (topPlayer.cityCount <= FakeHumanExecution.STEAMROLL_MIN_LEADER_CITIES)
+      return null;
+
     const secondHighest = allPlayers[1].cityCount;
 
     const threshold =

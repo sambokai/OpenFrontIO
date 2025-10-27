@@ -383,8 +383,9 @@ describe("FakeHuman MIRV Retaliation", () => {
         }
       }
     }
-    // Give steamroller cities
-    for (let i = 0; i < 9; i++) {
+    // Give steamroller cities (need more than STEAMROLL_MIN_LEADER_CITIES to trigger steam roll logic)
+    const minLeaderCities = 10; // STEAMROLL_MIN_LEADER_CITIES constant value
+    for (let i = 0; i < minLeaderCities + 2; i++) {
       const steamrollerTile = Array.from(steamroller.tiles())[0];
       if (steamrollerTile) {
         steamroller.buildUnit(UnitType.City, steamrollerTile, {});
@@ -398,7 +399,7 @@ describe("FakeHuman MIRV Retaliation", () => {
 
     // Verify preconditions
     expect(fakehuman.units(UnitType.MissileSilo)).toHaveLength(1);
-    expect(steamroller.unitCount(UnitType.City)).toBe(9);
+    expect(steamroller.unitCount(UnitType.City)).toBe(minLeaderCities + 2);
     expect(secondPlayer.unitCount(UnitType.City)).toBe(5);
     expect(fakehuman.units(UnitType.MIRV)).toHaveLength(0);
 
@@ -453,6 +454,135 @@ describe("FakeHuman MIRV Retaliation", () => {
       const targetOwner = game.owner(steamrollStopTarget);
       expect(targetOwner).toBe(steamroller);
     }
+  });
+
+  test("fakehuman does not launch MIRV for steamroll when leader has <= 10 cities", async () => {
+    // Setup game
+    const game = await setup("big_plains", {
+      infiniteGold: true,
+      instantBuild: true,
+    });
+
+    // Create three players
+    const steamrollerInfo = new PlayerInfo(
+      "steamroller",
+      PlayerType.Human,
+      null,
+      "steamroller_id",
+    );
+    const secondPlayerInfo = new PlayerInfo(
+      "second_player",
+      PlayerType.Human,
+      null,
+      "second_id",
+    );
+    const fakehumanInfo = new PlayerInfo(
+      "defender_fakehuman",
+      PlayerType.FakeHuman,
+      null,
+      "fakehuman_id",
+    );
+
+    game.addPlayer(steamrollerInfo);
+    game.addPlayer(secondPlayerInfo);
+    game.addPlayer(fakehumanInfo);
+
+    // Skip spawn phase
+    while (game.inSpawnPhase()) {
+      game.executeNextTick();
+    }
+
+    const steamroller = game.player("steamroller_id");
+    const secondPlayer = game.player("second_id");
+    const fakehuman = game.player("fakehuman_id");
+
+    // Give fakehuman a small territory and missile silo
+    for (let x = 45; x < 55; x++) {
+      for (let y = 45; y < 55; y++) {
+        const tile = game.ref(x, y);
+        if (game.map().isLand(tile) && !game.map().hasOwner(tile)) {
+          fakehuman.conquer(tile);
+        }
+      }
+    }
+    const fakehumanTile = Array.from(fakehuman.tiles())[0];
+    if (fakehumanTile) {
+      fakehuman.buildUnit(UnitType.MissileSilo, fakehumanTile, {});
+    }
+
+    // Give second player territory and cities (5 cities)
+    for (let x = 25; x < 45; x++) {
+      for (let y = 25; y < 45; y++) {
+        const tile = game.ref(x, y);
+        if (game.map().isLand(tile) && !game.map().hasOwner(tile)) {
+          secondPlayer.conquer(tile);
+        }
+      }
+    }
+    for (let i = 0; i < 5; i++) {
+      const secondPlayerTile = Array.from(secondPlayer.tiles())[0];
+      if (secondPlayerTile) {
+        secondPlayer.buildUnit(UnitType.City, secondPlayerTile, {});
+      }
+    }
+
+    // Give steamroller territory and cities (exactly at STEAMROLL_MIN_LEADER_CITIES threshold)
+    const minLeaderCities = 10; // STEAMROLL_MIN_LEADER_CITIES constant value
+    for (let x = 5; x < 25; x++) {
+      for (let y = 5; y < 25; y++) {
+        const tile = game.ref(x, y);
+        if (game.map().isLand(tile) && !game.map().hasOwner(tile)) {
+          steamroller.conquer(tile);
+        }
+      }
+    }
+    for (let i = 0; i < minLeaderCities; i++) {
+      const steamrollerTile = Array.from(steamroller.tiles())[0];
+      if (steamrollerTile) {
+        steamroller.buildUnit(UnitType.City, steamrollerTile, {});
+      }
+    }
+
+    // Give all players enough gold for MIRVs
+    steamroller.addGold(100_000_000n);
+    secondPlayer.addGold(100_000_000n);
+    fakehuman.addGold(100_000_000n);
+
+    // Verify preconditions - leader has exactly STEAMROLL_MIN_LEADER_CITIES (should not trigger steam roll)
+    expect(fakehuman.units(UnitType.MissileSilo)).toHaveLength(1);
+    expect(steamroller.unitCount(UnitType.City)).toBe(minLeaderCities);
+    expect(secondPlayer.unitCount(UnitType.City)).toBe(5);
+    expect(fakehuman.units(UnitType.MIRV)).toHaveLength(0);
+
+    // Track MIRVs before fakehuman considers steamroll stop
+    const mirvCountBefore = fakehuman.units(UnitType.MIRV).length;
+
+    // Initialize fakehuman with FakeHumanExecution to enable steamroll stop logic
+    const fakehumanNation = new Nation(new Cell(50, 50), 1, fakehuman.info());
+
+    // Try different game IDs to find one that passes the MIRV failure rate
+    const gameIds = Array.from({ length: 20 }, (_, i) => `game_${i}`);
+    let steamrollStopAttempted = false;
+
+    for (const gameId of gameIds) {
+      const testExecution = new FakeHumanExecution(gameId, fakehumanNation);
+      testExecution.init(game);
+
+      for (let tick = 0; tick < 200; tick++) {
+        testExecution.tick(tick);
+        game.executeNextTick();
+      }
+
+      // Check if any MIRVs were launched for steamroll stop
+      const fakehumanMirvs = fakehuman.units(UnitType.MIRV);
+      if (fakehumanMirvs.length > mirvCountBefore) {
+        steamrollStopAttempted = true;
+        break;
+      }
+    }
+
+    // Assert that steamroll stop was NOT attempted due to leader city count condition
+    expect(steamrollStopAttempted).toBe(false);
   });
 
   test("fakehuman launches MIRV to prevent team victory when team approaches victory denial threshold (targets biggest team member)", async () => {
