@@ -104,7 +104,7 @@ describe("FakeHuman MIRV Retaliation", () => {
       // 1. Fakehuman only runs on ticks matching attackRate/attackTick pattern
       // 2. First run initializes behavior, subsequent runs execute MIRV logic
       for (let tick = 0; tick < 200; tick++) {
-        testExecution.tick(game.ticks() + tick);
+        testExecution.tick(game.ticks());
         // Allow the game to process executions
         if (tick % 10 === 0) {
           game.executeNextTick();
@@ -265,7 +265,7 @@ describe("FakeHuman MIRV Retaliation", () => {
       testExecution.init(game);
 
       for (let tick = 0; tick < 200; tick++) {
-        testExecution.tick(game.ticks() + tick);
+        testExecution.tick(game.ticks());
         // Allow the game to process executions
         if (tick % 10 === 0) {
           game.executeNextTick();
@@ -418,7 +418,7 @@ describe("FakeHuman MIRV Retaliation", () => {
       testExecution.init(game);
 
       for (let tick = 0; tick < 200; tick++) {
-        testExecution.tick(game.ticks() + tick);
+        testExecution.tick(game.ticks());
         // Allow the game to process executions
         if (tick % 10 === 0) {
           game.executeNextTick();
@@ -569,7 +569,7 @@ describe("FakeHuman MIRV Retaliation", () => {
       testExecution.init(game);
 
       for (let tick = 0; tick < 200; tick++) {
-        testExecution.tick(tick);
+        testExecution.tick(game.ticks());
         game.executeNextTick();
       }
 
@@ -703,7 +703,7 @@ describe("FakeHuman MIRV Retaliation", () => {
       testExecution.init(game);
 
       for (let tick = 0; tick < 200; tick++) {
-        testExecution.tick(game.ticks() + tick);
+        testExecution.tick(game.ticks());
         // Allow the game to process executions
         if (tick % 10 === 0) {
           game.executeNextTick();
