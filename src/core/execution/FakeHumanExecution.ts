@@ -133,7 +133,9 @@ export class FakeHumanExecution implements Execution {
   }
 
   tick(ticks: number) {
-    if (ticks % this.attackRate !== this.attackTick) return;
+    if (ticks % this.attackRate !== this.attackTick) {
+      return;
+    }
 
     if (this.mg.inSpawnPhase()) {
       const rl = this.randomSpawnLand();
@@ -683,11 +685,17 @@ export class FakeHumanExecution implements Execution {
   // MIRV Strategy Methods
   private considerMIRV(): boolean {
     if (this.player === null) throw new Error("not initialized");
-    if (this.player.units(UnitType.MissileSilo).length === 0) return false;
-    if (this.player.gold() < this.cost(UnitType.MIRV)) return false;
+    if (this.player.units(UnitType.MissileSilo).length === 0) {
+      return false;
+    }
+    if (this.player.gold() < this.cost(UnitType.MIRV)) {
+      return false;
+    }
 
     this.removeOldMIRVEvents();
-    if (this.lastMIRVSent.length > 0) return false;
+    if (this.lastMIRVSent.length > 0) {
+      return false;
+    }
 
     if (this.random.chance(FakeHumanExecution.MIRV_HESITATION_ODDS)) {
       this.triggerMIRVCooldown();
@@ -839,7 +847,9 @@ export class FakeHumanExecution implements Execution {
       if (!dst) continue;
       if (!this.mg.hasOwner(dst)) continue;
       const owner = this.mg.owner(dst);
-      if (owner === this.player) return true;
+      if (owner === this.player) {
+        return true;
+      }
     }
     return false;
   }
