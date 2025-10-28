@@ -868,19 +868,10 @@ export class FakeHumanExecution implements Execution {
 
     this.maybeSendEmoji(enemy);
 
-    const enemyTiles = Array.from(enemy.tiles());
-    if (enemyTiles.length === 0) return;
-
     const centerTile = this.calculateTerritoryCenter(enemy);
     if (centerTile && this.player.canBuild(UnitType.MIRV, centerTile)) {
       this.sendMIRV(centerTile);
       return;
-    }
-    for (const tile of enemyTiles) {
-      if (this.player.canBuild(UnitType.MIRV, tile)) {
-        this.sendMIRV(tile);
-        return;
-      }
     }
   }
 
